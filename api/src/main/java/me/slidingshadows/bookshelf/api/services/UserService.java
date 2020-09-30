@@ -10,16 +10,11 @@ import me.slidingshadows.bookshelf.api.domain.Role;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
-public class UserService {
+public class UserService extends BaseService {
     @Autowired
     UserRepository userRepository;
 
@@ -31,9 +26,6 @@ public class UserService {
 
     @Autowired
     Provider provider;
-
-    @Autowired
-    Validator validator;
 
     public User saveUser(User user, String password, String roleName) {
         Role role = roleRepository.findByName(roleName);
@@ -48,17 +40,12 @@ public class UserService {
 
     public LoginResponse login(LoginRequest request) {
         LoginResponse response = new LoginResponse();
-        Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
+        validate(response, request);
 
-        if (!violations.isEmpty()) {
-            for (ConstraintViolation<LoginRequest> violation : violations) {
-                response.addError(violation.getPropertyPath().toString(), violation.getMessage());
-            }
-            
-            return response;
+        if (response.getSucceeded()) {
+            response.setToken(provider.generateToken(request.getUsername()));
         }
 
-        response.setToken(provider.generateToken(request.getUsername()));
         return response;
     }
 }
