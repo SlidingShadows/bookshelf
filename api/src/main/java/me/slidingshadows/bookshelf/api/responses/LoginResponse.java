@@ -1,11 +1,7 @@
-package me.slidingshadows.bookshelf.api.home;
+package me.slidingshadows.bookshelf.api.responses;
 
-public class LoginResponse {
+public class LoginResponse extends BaseResponse {
     private String token;
-
-    public LoginResponse(String token) {
-        this.token = token;
-    }
 
     public String getToken() {
         return token;

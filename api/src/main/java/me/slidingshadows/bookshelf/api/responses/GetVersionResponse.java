@@ -1,15 +1,15 @@
-package me.slidingshadows.bookshelf.api.home;
+package me.slidingshadows.bookshelf.api.responses;
 
-public class VersionResponse {
+public class GetVersionResponse extends BaseResponse {
     private String product;
     private String version;
 
-    public VersionResponse(String product, String version) {
+    public GetVersionResponse(String product, String version) {
         this.product = product;
         this.version = version;
     }
 
-    public String getProduct () {
+    public String getProduct() {
         return product;
     }
 
