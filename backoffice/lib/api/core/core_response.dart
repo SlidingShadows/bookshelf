@@ -1,8 +1,5 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'core_responseerror.dart';
-part 'core_response.g.dart';
 
-@JsonSerializable()
 class Response {
   final String requestId;
   final bool succeeded;
@@ -10,6 +7,11 @@ class Response {
 
   Response(this.requestId, this.succeeded, this.errors);
 
-  factory Response.fromJson(Map<String, dynamic> json) => _$ResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$ResponseToJson(this);
+  factory Response.fromJson(Map<String, dynamic> json) => Response(
+    json['requestId'] as String,
+    json['succeeded'] as bool,
+    (json['errors'] as List<dynamic>)
+        .map((e) => ResponseError.fromJson(e as Map<String, dynamic>))
+        .toList(),
+  );
 }

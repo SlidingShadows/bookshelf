@@ -1,11 +1,20 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-void storeToken(String token) async {
-  var prefs = await SharedPreferences.getInstance();
-  await prefs.setString("token", token);
+void storeToken(String? token) async {
+  var preferences = await SharedPreferences.getInstance();
+  if (token != null) {
+    await preferences.setString('token', token);
+  } else {
+    await preferences.remove('token');
+  }
+}
+
+Future<void> clearToken() async {
+  var preferences = await SharedPreferences.getInstance();
+  await preferences.remove('token');
 }
 
 Future<String?> loadToken() async {
-  var prefs = await SharedPreferences.getInstance();
-  return prefs.getString("token");
+  var preferences = await SharedPreferences.getInstance();
+  return preferences.getString('token');
 }

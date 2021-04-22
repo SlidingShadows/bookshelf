@@ -3,8 +3,13 @@ import 'package:backoffice/pages/pages.dart';
 import 'package:backoffice/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:backoffice/config/config.dart';
 
 void main() {
+  BackOfficeConfig(
+      baseUrl: 'https://localhost:44332',
+  );
+
   runApp(
     RepositoryProvider<AuthenticationService> (
       create: (context) => AuthenticationServiceImpl(),

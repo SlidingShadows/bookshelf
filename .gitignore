@@ -20,3 +20,7 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+.vs/bookshelf/v16/.suo
+BookShelf.Logic/obj
+BookShelf.WebApi/obj
+BookShelf.Data/obj
