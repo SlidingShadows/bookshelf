@@ -1,12 +1,14 @@
 class BackOfficeConfig {
-  final String baseUrl;
+  final String authority;
+  final bool useHttps;
   static BackOfficeConfig? _instance;
 
   factory BackOfficeConfig({
-    required String baseUrl,
-  }) => _instance ??= BackOfficeConfig._(baseUrl);
+    required String authority,
+    required bool useHttps,
+  }) => _instance ??= BackOfficeConfig._(authority, useHttps);
 
-  BackOfficeConfig._(this.baseUrl);
+  BackOfficeConfig._(this.authority, this.useHttps);
 
   static BackOfficeConfig? get instance => _instance;
 }

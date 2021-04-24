@@ -24,3 +24,4 @@ doc/api/
 BookShelf.Logic/obj
 BookShelf.WebApi/obj
 BookShelf.Data/obj
+.vs/bookshelf/DesignTimeBuild/.dtbcache.v2

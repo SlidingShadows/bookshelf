@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:backoffice/exceptions/exceptions.dart';
 import 'package:backoffice/models/models.dart';
 import 'package:backoffice/api/api.dart';
+import 'package:backoffice/services/client.dart';
 import 'package:backoffice/services/local_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'base_service.dart';
-import 'package:http/http.dart' as http;
 
 abstract class AuthenticationService {
   Future<User?> getCurrentUser();
@@ -13,7 +11,7 @@ abstract class AuthenticationService {
   Future<void> signOut();
 }
 
-class AuthenticationServiceImpl with BaseService implements AuthenticationService {
+class AuthenticationServiceImpl with AuthenticationService {
   @override
   Future<User?> getCurrentUser() async {
     final token = await loadToken();
@@ -27,32 +25,28 @@ class AuthenticationServiceImpl with BaseService implements AuthenticationServic
 
   @override
   Future<User> signIn(String email, String password) async {
-    final request = AuthenticationRequest(email, password);
+    final client = Client();
 
-    final httpResponse = await http.post(
-      getMethodUri('/auth/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: json.encode(request.toJson()),
-    );
-
-    if (httpResponse.statusCode == 200) {
-       final response = AuthenticationResponse.fromJson(json.decode(httpResponse.body));
+    try {
+      final response = await client.post<AuthenticationResponse>(
+          '/auth/login',
+          request: AuthenticationRequest(email, password),
+          secured: false,
+      );
 
       if (response.succeeded) {
         final token = response.token;
 
         if (token != null) {
-          storeToken(token);
+          await storeToken(token);
           return _loadFromToken(token);
         }
       }
 
       throw AuthenticationException(message: response.errors[0].description);
+    } finally {
+      client.close();
     }
-
-    throw Exception('Fatal error');
   }
 
   User _loadFromToken(String token) {

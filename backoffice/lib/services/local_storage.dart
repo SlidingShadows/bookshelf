@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-void storeToken(String? token) async {
+Future<void> storeToken(String? token) async {
   var preferences = await SharedPreferences.getInstance();
   if (token != null) {
     await preferences.setString('token', token);

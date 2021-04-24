@@ -7,7 +7,8 @@ import 'package:backoffice/config/config.dart';
 
 void main() {
   BackOfficeConfig(
-      baseUrl: 'https://localhost:44332',
+      authority: 'localhost:44332',
+      useHttps: true,
   );
 
   runApp(
