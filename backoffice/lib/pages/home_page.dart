@@ -1,17 +1,14 @@
+import 'package:backoffice/cubits/cubits.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:backoffice/blocs/blocs.dart';
-import 'package:backoffice/models/models.dart';
 
 class HomePage extends StatelessWidget {
-  final User user;
+  final String token;
 
-  const HomePage({required this.user}): super();
+  const HomePage({required this.token}): super();
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('BackOffice'),
@@ -22,7 +19,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                'Welcome, ${user.email}',
+                'Welcome, $token',
                 style: TextStyle(
                   fontSize: 24,
                 ),
@@ -32,7 +29,7 @@ class HomePage extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  authBloc.add(UserLoggedOut());
+                  context.read<AuthenticationCubit>().logout();
                 },
                 child: Text('Logout'),
               ),

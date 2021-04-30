@@ -1,49 +1,92 @@
-import 'package:backoffice/blocs/blocs.dart';
 import 'package:backoffice/pages/pages.dart';
-import 'package:backoffice/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:backoffice/config/config.dart';
+import 'package:backoffice/cubits/cubits.dart';
+import 'package:backoffice/layout/layout.dart' as layout;
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   BackOfficeConfig(
       authority: 'localhost:44332',
       useHttps: true,
   );
-
-  runApp(
-    RepositoryProvider<AuthenticationService> (
-      create: (context) => AuthenticationServiceImpl(),
-      child: BlocProvider<AuthenticationBloc> (
-        create: (context) {
-          final authService = RepositoryProvider.of<AuthenticationService>(context);
-          return AuthenticationBloc(authService)..add(AppLoaded());
-        },
-        child: BackOffice(),
-      ),
-    )
-  );
+  
+  runApp(BlocProvider<AuthenticationCubit>(
+    create: (context) => AuthenticationCubit(),
+    child: BackOffice(),
+  ));
 }
 
 class BackOffice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      restorationScopeId: 'backoffice',
       title: 'BackOffice',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState> (
+      debugShowCheckedModeBanner: false,
+      theme: _buildTheme(),
+      home: BlocBuilder<AuthenticationCubit, AuthenticationState>(
         builder: (context, state) {
-          if (state is AuthenticationAuthenticated) {
-            return HomePage(
-              user: state.user,
-            );
+          if (state is AuthenticationSuccess) {
+            return HomePage(token: state.token);
           }
 
           return LoginPage();
         },
-      ),
+      )
     );
   }
+}
+
+ThemeData _buildTheme () {
+  final base = ThemeData.dark();
+
+  return ThemeData(
+    appBarTheme: const AppBarTheme(
+      brightness: Brightness.dark,
+      elevation: 0,
+    ),
+    scaffoldBackgroundColor: layout.BackOfficeColors.primaryBackground,
+    primaryColor: layout.BackOfficeColors.primaryBackground,
+    focusColor: layout.BackOfficeColors.focusColor,
+    textTheme: _buildTextTheme(base.textTheme),
+    inputDecorationTheme: const InputDecorationTheme(
+      labelStyle: TextStyle(
+        color: layout.BackOfficeColors.gray,
+        fontWeight: FontWeight.w500,
+      ),
+      filled: true,
+      fillColor: layout.BackOfficeColors.inputBackground,
+      focusedBorder: InputBorder.none,
+    ),
+    visualDensity: VisualDensity.standard,
+  );
+}
+
+TextTheme _buildTextTheme(TextTheme base) {
+  return base.copyWith(
+    bodyText2: GoogleFonts.robotoCondensed(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      letterSpacing: layout.letterSpacingWorkAround(0.5),
+    ),
+    bodyText1: GoogleFonts.robotoCondensed(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: layout.letterSpacingWorkAround(1.4),
+    ),
+    button: GoogleFonts.robotoCondensed(
+      fontWeight: FontWeight.w700,
+      letterSpacing: layout.letterSpacingWorkAround(2.8),
+    ),
+    headline5: GoogleFonts.robotoCondensed(
+      fontSize: 40,
+      fontWeight: FontWeight.w600,
+      letterSpacing: layout.letterSpacingWorkAround(1.4),
+    ),
+  ).apply(
+    displayColor: Colors.white,
+    bodyColor: Colors.white,
+  );
 }

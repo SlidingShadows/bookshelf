@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:backoffice/api/api.dart';
+import 'package:backoffice/api/api.dart' as api;
 import 'package:backoffice/config/config.dart';
 import 'package:backoffice/exceptions/exceptions.dart';
-import 'package:backoffice/services/local_storage.dart';
+import 'package:backoffice/services/local_storage.dart' as local;
 
 // For now use simple map. In future best way to use annotations
 final jsonResponseFactories = <Type, Function> {
-  AuthenticationResponse: (Map<String, dynamic> json) => AuthenticationResponse.fromJson(json),
+  api.AuthenticationResponse: (Map<String, dynamic> json) => api.AuthenticationResponse.fromJson(json),
 };
 
 class Client {
@@ -17,7 +17,7 @@ class Client {
   Client(): _client = http.Client();
 
   Future<T> post<T>(String path, {
-    Request? request,
+    api.Request? request,
     bool secured = true,
     Map<String, dynamic>? queryParameters
   }) async {
@@ -56,7 +56,7 @@ class Client {
     };
 
     if (secured) {
-      var token = await loadToken();
+      var token = await local.loadToken();
       if (token != null) {
         headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
       }
@@ -65,7 +65,7 @@ class Client {
     return headers;
   }
 
-  String? _getBody (Request? request) {
+  String? _getBody (api.Request? request) {
     if (request != null) {
       return json.encode(request.toJson());
     }

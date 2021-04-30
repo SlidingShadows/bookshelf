@@ -51,7 +51,7 @@ namespace BookShelf.Logic.Handlers
 
             if (!result.Succeeded)
             {
-                response.Failed("email", "Invalid password");
+                response.Failed("password", "Invalid password");
                 return response;
             }
 
