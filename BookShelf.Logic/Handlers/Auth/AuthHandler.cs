@@ -39,6 +39,21 @@ namespace BookShelf.Logic.Handlers
                 RequestId = request.RequestId,
             };
 
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                response.Failed("email", "Please provide your email");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Password))
+            {
+                response.Failed("password", "Please provide your password");
+            }
+
+            if (!response.Succeeded)
+            {
+                return response;
+            }
+
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
