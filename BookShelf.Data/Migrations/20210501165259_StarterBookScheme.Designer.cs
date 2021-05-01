@@ -4,14 +4,16 @@ using BookShelf.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookShelf.Data.Migrations
 {
     [DbContext(typeof(BookShelfContext))]
-    partial class BookShelfContextModelSnapshot : ModelSnapshot
+    [Migration("20210501165259_StarterBookScheme")]
+    partial class StarterBookScheme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -13,10 +13,7 @@ void main() {
       useHttps: true,
   );
   
-  runApp(BlocProvider<AuthenticationCubit>(
-    create: (context) => AuthenticationCubit(),
-    child: BackOffice(),
-  ));
+  runApp(BackOffice.makeIt());
 }
 
 class BackOffice extends StatelessWidget {
@@ -38,6 +35,13 @@ class BackOffice extends StatelessWidget {
           return LoginPage();
         },
       )
+    );
+  }
+
+  static Widget makeIt () {
+    return BlocProvider<AuthenticationCubit>(
+      create: (context) => AuthenticationCubit(),
+      child: BackOffice(),
     );
   }
 }
