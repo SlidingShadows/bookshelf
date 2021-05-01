@@ -25,10 +25,9 @@ class AuthenticationSuccess extends AuthenticationState {
 }
 
 class AuthenticationErrors extends AuthenticationState {
-  final String? email;
   final Map<String, String> errors;
 
-  const AuthenticationErrors(this.email, this.errors);
+  const AuthenticationErrors(this.errors);
 
   @override
   List<Object?> get props => [errors];

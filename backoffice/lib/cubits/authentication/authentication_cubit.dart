@@ -13,11 +13,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       final response = await client.post<AuthenticationResponse>(
         '/auth/login',
         request: AuthenticationRequest(email, password),
-        secured: false,
       );
 
-      if (response.succeeded) emit(AuthenticationSuccess(response.token ?? 'PANIC!'));
-      else emit(AuthenticationErrors(email, { for (var e in response.errors) e.code: e.description }));
+      if (response.succeeded) emit(AuthenticationSuccess(response.token!));
+      else emit(AuthenticationErrors({ for (var e in response.errors) e.code: e.description }));
 
     } catch (e) {
       emit(AuthenticationFailure('An unknown error occurred'));

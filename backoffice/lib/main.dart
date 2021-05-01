@@ -5,6 +5,7 @@ import 'package:backoffice/config/config.dart';
 import 'package:backoffice/cubits/cubits.dart';
 import 'package:backoffice/layout/layout.dart' as layout;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   BackOfficeConfig(
@@ -26,6 +27,8 @@ class BackOffice extends StatelessWidget {
       title: 'BackOffice',
       debugShowCheckedModeBanner: false,
       theme: _buildTheme(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: BlocBuilder<AuthenticationCubit, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationSuccess) {

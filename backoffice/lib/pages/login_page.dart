@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:backoffice/cubits/cubits.dart';
 import 'package:backoffice/layout/layout.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -137,7 +138,7 @@ class _TopBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'BackOffice',
+                AppLocalizations.of(context)!.backOffice,
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
                   fontSize: 35 / reducedTextScale(context),
                   fontWeight: FontWeight.w600,
@@ -173,7 +174,7 @@ class _EmailInput extends StatelessWidget {
               textInputAction: TextInputAction.next,
               controller: emailController,
               decoration: InputDecoration(
-                labelText: 'E-mail',
+                labelText: AppLocalizations.of(context)!.loginEmail,
                 errorText: state is AuthenticationErrors ? state.errors['email'] : null,
               ),
             );
@@ -206,7 +207,7 @@ class _PasswordInput extends StatelessWidget {
               textInputAction: TextInputAction.next,
               controller: passwordController,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: AppLocalizations.of(context)!.loginPassword,
                 errorText: state is AuthenticationErrors ? state.errors['password'] : null,
               ),
               obscureText: true,
@@ -242,7 +243,7 @@ class _LoginFooter extends StatelessWidget {
                 if (state is AuthenticationLoading) CircularProgressIndicator(),
                 const Expanded(child: SizedBox.shrink()),
                 _LoginButton(
-                  text: 'Login',
+                  text: AppLocalizations.of(context)!.loginLogin,
                   onTap: onTap,
                 ),
               ],

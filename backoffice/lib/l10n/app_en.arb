@@ -1,0 +1,18 @@
+{
+  "backOffice": "BackOffice",
+  "@backOffice": {
+    "description": "Application title"
+  },
+  "loginEmail": "E-mail",
+  "@loginEmail": {
+    "description": "E-mail input caption on login page"
+  },
+  "loginPassword": "Password",
+  "@loginPassword": {
+    "description": "Password input caption on login page"
+  },
+  "loginLogin": "Login",
+  "@loginLogin": {
+    "description": "Login button caption on login page"
+  }
+}
