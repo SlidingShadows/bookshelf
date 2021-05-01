@@ -20,8 +20,9 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
-.vs/bookshelf/v16/.suo
+.vs/bookshelf
 BookShelf.Logic/obj
 BookShelf.WebApi/obj
 BookShelf.Data/obj
 .vs/bookshelf/DesignTimeBuild/.dtbcache.v2
+.vs/bookshelf/config/applicationhost.config
