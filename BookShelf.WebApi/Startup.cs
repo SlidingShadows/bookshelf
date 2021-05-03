@@ -1,25 +1,17 @@
 using BookShelf.Data.Contexts;
 using BookShelf.Data.Models;
+using BookShelf.Logic.Handlers;
+using BookShelf.WebApi.Infrastructure.Extensions;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MediatR;
-using BookShelf.Logic.Handlers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using BookShelf.WebApi.Infrastructure.Extensions;
+using System.Text;
 
 namespace BookShelf.WebApi
 {
@@ -35,8 +27,10 @@ namespace BookShelf.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.LoadApiConfiguration(Configuration)
-                .AddMediatR(typeof(ProductInfoHandler).Assembly);
+            services
+                .LoadApiConfiguration(Configuration)
+                .AddMediatR(typeof(ProductInfoHandler).Assembly)
+                .RegisterValidators();
 
             services.AddAuthentication(options =>
             {
@@ -68,10 +62,7 @@ namespace BookShelf.WebApi
             services.AddCors();
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookShelf.WebApi", Version = "v1" });
-            });
+            services.AddSwaggerSettings();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,8 +78,7 @@ namespace BookShelf.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookShelf.WebApi v1"));
+                app.UseSwaggerSettings();
             }
 
             app.UseHttpsRedirection();

@@ -1,5 +1,6 @@
 ﻿using BookShelf.Logic.Common;
 using BookShelf.Logic.Models;
+using FluentValidation.Results;
 using System.Collections.Generic;
 
 namespace BookShelf.Logic.Responses
@@ -27,6 +28,19 @@ namespace BookShelf.Logic.Responses
             });
 
             Succeeded = false;
+        }
+
+        public bool FromResult(ValidationResult result)
+        {
+            if (!result.IsValid)
+            {
+                foreach (var faulure in result.Errors)
+                {
+                    Failed(faulure.ErrorCode, faulure.ErrorMessage);
+                }
+            }
+
+            return Succeeded;
         }
     }
 }
